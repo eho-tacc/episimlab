@@ -1,6 +1,6 @@
 import xsimlab as xs
 
-from ..setup import seed, sto, epi, counts, coords, adj, phi
+from ..setup import seed, sto, epi, counts, coords, phi
 from ..foi import (
     brute_force as bf_foi,
     bf_cython as bf_cython_foi
@@ -13,7 +13,6 @@ from ..seir import (
 from .. import apply_counts_delta
 from ..partition.partition import NC2Contact, Contact2Phi
 from ..io.config import ReadV1Config
-from ..network import cython_explicit_travel
 
 
 def minimum_viable():
@@ -69,26 +68,6 @@ def slow_seir():
     ))
 
 
-def cy_adj():
-    model = minimum_viable()
-    return model.update_processes(dict(
-        # Initialize adjacency matrix
-        setup_adj=adj.InitToyAdj,
-        # Use adjacency matrix to simulate travel between vertices in cython
-        travel=cython_explicit_travel.CythonExplicitTravel,
-    ))
-
-
-def cy_adj_slow_seir():
-    model = slow_seir()
-    return model.update_processes(dict(
-        # Initialize adjacency matrix
-        setup_adj=adj.InitToyAdj,
-        # Use adjacency matrix to simulate travel between vertices in cython
-        travel=cython_explicit_travel.CythonExplicitTravel,
-    ))
-
-
 def slow_seir_cy_foi():
     model = slow_seir()
     return model.update_processes(dict(
@@ -103,15 +82,6 @@ def cy_seir_cy_foi():
         seir=bf_cython_seir.BruteForceCythonSEIR
     ))
 
-
-def cy_seir_cy_foi_cy_adj():
-    model = cy_seir_cy_foi()
-    return model.update_processes(dict(
-        # Initialize adjacency matrix
-        setup_adj=adj.InitToyAdj,
-        # Use adjacency matrix to simulate travel between vertices in cython
-        travel=cython_explicit_travel.CythonExplicitTravel,
-    ))
 
 
 def partition():

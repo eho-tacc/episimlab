@@ -52,7 +52,6 @@ repo_url = 'https://github.com/eho-tacc/episimlab'
 pkg_dir = 'episimlab'
 
 # Determines whether to cythonize extensions or compile from *.c
-# TODO: populate from command line option
 USE_CYTHON = True
 src_ext = '.pyx' if USE_CYTHON else '.c'
 
@@ -74,9 +73,6 @@ gsl_lib = dict(language='c',
 extensions = [
     Extension('episimlab.cy_utils.cy_utils',
               sources=[f"episimlab/cy_utils/cy_utils{src_ext}"],
-              **gsl_lib),
-    Extension('episimlab.network.cython_explicit_travel_engine',
-              sources=[f"episimlab/network/cython_explicit_travel_engine{src_ext}"],
               **gsl_lib),
     Extension('episimlab.seir.bf_cython_engine',
               sources=[f"episimlab/seir/bf_cython_engine{src_ext}"],
